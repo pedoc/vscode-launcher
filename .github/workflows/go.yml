@@ -25,13 +25,13 @@ jobs:
           cache: false
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@9c156ee8a17a598857849441385a2041ef570552 # v6.3.0
-        before:
-          hooks:
-            - |
-              if [[ "$GOOS" == "linux" ]]; then
-                echo "Deleting rsrc.syso for linux build"
-                rm -f rsrc.syso
-              fi
+        hooks:
+          pre: # 在每个构建目标（例如 linux/amd64, windows/amd64）开始编译前执行
+            - cmd: |
+                if [ "{{.Os}}" = "linux" ]; then
+                  echo "Deleting rsrc.syso for linux build (target: {{.Os}}/{{.Arch}})"
+                  rm -f rsrc.syso
+                fi
         with:
           distribution: goreleaser
           version: "${{vars.GORELEASER_VERSION}}"
