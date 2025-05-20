@@ -1,0 +1,10 @@
+builds:
+  - id: "with-hooks"
+    builder: go
+    hooks:
+      pre:
+        - cmd: |
+            if [ "{{.Os}}" = "linux" ]; then
+              echo "Deleting rsrc.syso for linux build (target: {{.Os}}/{{.Arch}})"
+              rm -f rsrc.syso
+            fi
