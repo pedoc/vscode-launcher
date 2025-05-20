@@ -1,6 +1,3 @@
-builds:
-  - id: "with-hooks"
-    builder: go
-    hooks:
-      pre:
-        - cmd: hook.sh
+before:
+  hooks:
+    - bash hook.sh
