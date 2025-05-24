@@ -17,7 +17,7 @@ go build -trimpath -o vscode_launcher.exe ^
  -ldflags="-X main.GitCommit=!GIT_COMMIT! -X main.BuildTime=!BUILD_TIME! -X main.GitBranch=!GIT_BRANCH! -X main.GitVersion=!GIT_VERSION! -extldflags \"-static\" -s -w" ^
  .
 
-xcopy vscode_launcher.exe G:\init-env\开发\vscode1.85\VSCode-win32-x64-1.85.2\ /Y
+REM xcopy vscode_launcher.exe G:\init-env\开发\vscode1.85\VSCode-win32-x64-1.85.2\ /Y
 
 endlocal
 REM pause

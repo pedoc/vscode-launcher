@@ -94,7 +94,8 @@ func main() {
 func launchVSCode(wd string, codePath string, args ...string) error {
 	log.Println("Launching VSCode:", codePath)
 	if runtime.GOOS == "windows" {
-		allArgs := append([]string{"/C", "start", codePath}, args...)
+		allArgs := append([]string{"/C", "start", "", codePath}, args...)
+		log.Println("Command Arguments:", allArgs)
 		cmd := exec.Command("cmd", allArgs...)
 		cmd.Dir = wd
 		cmd.Stdout = os.Stdout
@@ -102,6 +103,7 @@ func launchVSCode(wd string, codePath string, args ...string) error {
 		return cmd.Run()
 	} else {
 		allArgs := append([]string{codePath}, args...)
+		log.Println("Command Arguments:", allArgs)
 		cmd := exec.Command("sh", "-c", fmt.Sprintf("%s", filepath.Join(allArgs...)))
 		cmd.Dir = wd
 		cmd.Stdout = os.Stdout
