@@ -18,19 +18,40 @@ var (
 	GitVersion string
 )
 
+// fileExists checks if a file or directory exists at the given path.
+func fileExists(path string) bool {
+	_, err := os.Stat(path)
+	return err == nil || !os.IsNotExist(err)
+}
+
+// getCodeBin returns the name of the VSCode binary based on the operating system.
+// It checks for the standard VSCode binary and, if not found, checks for the Insiders version.
+func getCodeBin() string {
+	var codeBin string
+	if runtime.GOOS == "windows" {
+		codeBin = "Code.exe"
+		if !fileExists(codeBin) {
+			codeBin = "Code - Insiders.exe"
+		}
+	} else {
+		codeBin = "code"
+		if !fileExists(codeBin) {
+			codeBin = "code-insiders"
+		}
+	}
+	return codeBin
+}
+
 func main() {
 	var userDataDirDefaultValue = "private-data"
 	var extensionsDirDefaultValue = "private-extensions"
-
+	var codeBin = getCodeBin()
 	wd, _ := os.Getwd()
 	log.Println("Working Directory:", wd)
-	codeBin := "Code.exe"
-	if runtime.GOOS != "windows" {
-		codeBin = "code"
-	}
+
 	codePath := filepath.Join(wd, codeBin)
-	if _, err := os.Stat(codePath); os.IsNotExist(err) {
-		log.Fatalf("Not found %s", codeBin)
+	if !fileExists(codePath) {
+		log.Fatalf("Not found %s", codePath)
 		return
 	}
 	var launchArgs []string
